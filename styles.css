@@ -24,5 +24,11 @@ body {
     background-attachment: fixed; /* Mantém o fundo fixo */
 }
 
+.btn-purple {
+    background-color: #8a2be2; /* Cor roxa */
+    border-color: #8a2be2;
+    color: white;
+  }
+
 
 
