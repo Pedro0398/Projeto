@@ -30,5 +30,30 @@ body {
     color: white;
   }
 
+  /* Estilizar o contêiner principal para centrar tudo */
+/* Contêiner principal que centraliza tudo */
+.form-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    margin-top: 50px;
+}
+
+/* Contêiner das labels e inputs */
+.input-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* Definir um tamanho fixo para as labels e alinhar o texto à direita */
+.input-container label {
+    width: 150px; /* Ajusta para que todas tenham o mesmo tamanho */
+    text-align: right; /* Faz com que o texto termine na mesma linha */
+}
+
+
+
 
 

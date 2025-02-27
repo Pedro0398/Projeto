@@ -71,6 +71,9 @@ function mainElements(elements){
     let buttonContainer = document.createElement("div");
     let elementsContainer = document.createElement("div");
 
+    buttonContainer.id = "buttonContainer";
+    elementsContainer.id = "elementsContainer";
+
     buttonContainer.classList.add("d-flex");
     buttonContainer.classList.add("gap-3");
     buttonContainer.classList.add("justify-content-center");
@@ -87,6 +90,7 @@ function mainElements(elements){
     addButton.classList.add("btn");
     addButton.classList.add("btn-sm");
     addButton.style.backgroundColor = "#ff69b4";
+    addButton.id = "mainButton";
 
     let editButton = document.createElement("button");
     let editbuttonText = "Editar"; // Apenas uma string
@@ -157,5 +161,65 @@ function genareteTable(header){
 function stockMenu(){
     let headers = ["Nome", "Referencia", "Imagem"];
     let table = genareteTable(headers);
+   
     mainElements(table);
+
+    document.getElementById("mainButton").addEventListener("click", function() {
+        let mainPage = document.getElementById("mainPage");
+        mainPage.replaceChildren();
+    
+        // Criar Input e Label para Nome do Produto
+        let nameBox = document.createElement("input");
+        nameBox.id = "nameBox";
+    
+        let labelForNameBox = document.createElement("label");
+        labelForNameBox.textContent = "Nome do Produto";
+        labelForNameBox.style.color = "#ff69b4";
+        labelForNameBox.style.fontWeight = "bold";
+        labelForNameBox.htmlFor = "nameBox";
+    
+        let nameContainer = document.createElement("div");
+        nameContainer.classList.add("input-container");
+        nameContainer.append(labelForNameBox, nameBox);
+    
+        // Criar Input e Label para Referência
+        let refBox = document.createElement("input");
+        refBox.id = "refBox";
+    
+        let labelFoRrefBox = document.createElement("label");
+        labelFoRrefBox.textContent = "Referência";
+        labelFoRrefBox.style.color = "#ff69b4";
+        labelFoRrefBox.style.fontWeight = "bold";
+        labelFoRrefBox.htmlFor = "refBox";
+
+        let addButton = document.createElement("button");
+        let addbuttonText = "Adicionar"; // Apenas uma string
+        addButton.textContent = addbuttonText; // Define o texto do botão
+        addButton.style.color = "white"; // Define a cor do texto
+        addButton.classList.add("btn");
+        addButton.classList.add("btn-sm");
+        addButton.style.backgroundColor = "#ff69b4";
+    
+        let refContainer = document.createElement("div");
+        refContainer.classList.add("input-container");
+        refContainer.append(labelFoRrefBox, refBox);
+
+        let buttonContainer = document.createElement("div");
+        buttonContainer.classList.add("form-container");
+        buttonContainer.append(addButton);
+    
+        // Criar um container principal para centrar os elementos
+        let formContainer = document.createElement("div");
+        formContainer.classList.add("form-container");
+        formContainer.append(nameContainer, refContainer);
+
+    
+        mainPage.append(formContainer, buttonContainer);
+
+        addButton.addEventListener("click", function(){
+            
+        });
+    });
+    
+    
 }
