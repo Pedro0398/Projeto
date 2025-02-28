@@ -1,3 +1,5 @@
+
+
 class ProductClass{
     constructor(name, ref, img){
         this.name = name;
@@ -54,17 +56,49 @@ class Sale{
     }
 }
 
-class infoHolder{
-    constructor(){
-        this.products = [];
-        this.sales = [];
+class InfoHolder{
+    constructor() {
+        if (!InfoHolder.instance) {
+            this.products = [];
+            InfoHolder.instance = this; // Garante que só existe uma instância
+        }
+        return InfoHolder.instance;
     }
 
     createProduct(name, ref, img){
         let newProduct = new ProductClass(name, ref, img);
         this.products.push(newProduct);
     }
+
+    toTableRows() {
+        return this.products.map(product => {
+            const row = document.createElement("tr");
+
+            const nameTd = document.createElement("td");
+            nameTd.textContent = product.name;
+            row.appendChild(nameTd);
+
+            const refTd = document.createElement("td");
+            refTd.textContent = product.ref;
+            row.appendChild(refTd);
+
+            const imgTd = document.createElement("td");
+            if (product.img !== "NA") {
+                const imgElement = document.createElement("img");
+                imgElement.src = product.img;
+                imgElement.style.width = "50px";
+                imgTd.appendChild(imgElement);
+            } else {
+                imgTd.textContent = "Sem imagem";
+            }
+            row.appendChild(imgTd);
+
+            return row;
+        });
+    }
 }
+
+let data = new InfoHolder();
 
 function mainElements(elements){
     let mainDiv = document.getElementById("mainPage");
@@ -80,7 +114,7 @@ function mainElements(elements){
 
     elementsContainer.classList.add("justify-content-center");
 
-    document.getElementById("main").classList.toggle("d-none");
+    mainDiv.replaceChildren();
     
     // Aqui está o problema - textContent não é um método, é uma propriedade
     let addButton = document.createElement("button");
@@ -136,25 +170,10 @@ function genareteTable(header){
     thead.appendChild(headerRow);
     table.appendChild(thead);
 
-    // Criar linhas da tabela
-    const data = [
-        { id: 1, nome: "João", idade: 25 },
-        { id: 2, nome: "Maria", idade: 30 },
-        { id: 3, nome: "Carlos", idade: 22 }
-    ];
+    data.toTableRows().forEach(row => tbody.appendChild(row));
 
-    data.forEach(item => {
-        const row = document.createElement("tr");
-
-        Object.values(item).forEach(text => {
-            const td = document.createElement("td");
-            td.textContent = text;
-            row.appendChild(td);
-        });
-
-        tbody.appendChild(row);
-    });
     table.appendChild(tbody);
+
     return table;
 }
 
@@ -217,7 +236,11 @@ function stockMenu(){
         mainPage.append(formContainer, buttonContainer);
 
         addButton.addEventListener("click", function(){
-            
+            let name = nameBox.value;
+            let ref = refBox.value;
+            let img = "NA";
+            data.createProduct(name, ref, img)
+            stockMenu();
         });
     });
     
