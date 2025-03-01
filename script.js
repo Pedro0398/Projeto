@@ -1,4 +1,6 @@
+import { app } from "./firebase-config.js";
 
+console.log("Firebase está a funcionar!", app);
 
 class ProductClass{
     constructor(name, ref, img){

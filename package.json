@@ -1,0 +1,23 @@
+{
+  "name": "projeto",
+  "version": "1.0.0",
+  "main": "script.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Pedro0398/Projeto.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Pedro0398/Projeto/issues"
+  },
+  "homepage": "https://github.com/Pedro0398/Projeto#readme",
+  "description": "",
+  "dependencies": {
+    "firebase": "^11.4.0"
+  }
+}
