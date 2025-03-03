@@ -1,3 +1,62 @@
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+import { getFirestore, collection, getDocs, addDoc} from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyA2QDJJb0LXEkEaqHx74n7yMoBsu6GEQ6g",
+  authDomain: "boticario-b56db.firebaseapp.com",
+  databaseURL: "https://boticario-b56db-default-rtdb.europe-west1.firebasedatabase.app",
+  projectId: "boticario-b56db",
+  storageBucket: "boticario-b56db.firebasestorage.app",
+  messagingSenderId: "161696311980",
+  appId: "1:161696311980:web:f6e59819d2b9136e054d09",
+  measurementId: "G-HS8BTHKJMR"
+};
+
+// Inicializar Firebase
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+console.log("Firebase inicializado com sucesso!");
+
+// Função para buscar usuários do Firestore
+async function getProduct() {
+  try {
+    // Usar as funções importadas corretamente
+    const productsCollection = collection(db, "products");
+    const usersSnapshot = await getDocs(productsCollection);
+    
+    console.log("Total de usuários encontrados:", usersSnapshot.size);
+    
+    usersSnapshot.forEach((doc) => {
+      data.rebuildList(doc.data().name, doc.data().ref, "NA");
+    });
+    
+    return usersSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+  } catch (error) {
+    console.error("Erro ao buscar usuários:", error);
+    return [];
+  }
+}
+
+async function addProduct(name, ref, img) {
+    try {
+      // Referência à coleção "products"
+      const productsCollection = collection(db, "products");
+  
+      // Adicionar um novo documento à coleção
+      const docRef = await addDoc(productsCollection, {
+        name: name,
+        ref: ref,
+        img: "NA"
+      });
+  
+      console.log("Produto adicionado com ID:", docRef.id);
+    } catch (error) {
+      console.error("Erro ao adicionar produto:", error);
+    }
+}
+
+getProduct();
 
 
 class ProductClass{
@@ -44,7 +103,7 @@ class Sale{
     }
 
     getFinalPrice(){
-        return this.price; // Corrigido: era this.finalPrice, mas a propriedade é this.price
+        return this.price;
     }
 
     getCatalogPrice(){
@@ -60,12 +119,18 @@ class InfoHolder{
     constructor() {
         if (!InfoHolder.instance) {
             this.products = [];
-            InfoHolder.instance = this; // Garante que só existe uma instância
+            InfoHolder.instance = this;
         }
         return InfoHolder.instance;
     }
 
     createProduct(name, ref, img){
+        let newProduct = new ProductClass(name, ref, img);
+        this.products.push(newProduct);
+        addProduct(name, ref);
+    }
+
+    rebuildList(name, ref, img){
         let newProduct = new ProductClass(name, ref, img);
         this.products.push(newProduct);
     }
@@ -116,28 +181,27 @@ function mainElements(elements){
 
     mainDiv.replaceChildren();
     
-    // Aqui está o problema - textContent não é um método, é uma propriedade
     let addButton = document.createElement("button");
-    let addbuttonText = "Adicionar"; // Apenas uma string
-    addButton.textContent = addbuttonText; // Define o texto do botão
-    addButton.style.color = "white"; // Define a cor do texto
+    let addbuttonText = "Adicionar";
+    addButton.textContent = addbuttonText;
+    addButton.style.color = "white";
     addButton.classList.add("btn");
     addButton.classList.add("btn-sm");
     addButton.style.backgroundColor = "#ff69b4";
     addButton.id = "mainButton";
 
     let editButton = document.createElement("button");
-    let editbuttonText = "Editar"; // Apenas uma string
-    editButton.textContent = editbuttonText; // Define o texto do botão
-    editButton.style.color = "white"; // Define a cor do texto
+    let editbuttonText = "Editar";
+    editButton.textContent = editbuttonText;
+    editButton.style.color = "white";
     editButton.classList.add("btn");
     editButton.classList.add("btn-sm");
     editButton.style.backgroundColor = "#ff69b4";
 
     let deleteButton = document.createElement("button");
-    let deletebuttonText = "Apagar"; // Apenas uma string
-    deleteButton.textContent = deletebuttonText; // Define o texto do botão
-    deleteButton.style.color = "white"; // Define a cor do texto
+    let deletebuttonText = "Apagar";
+    deleteButton.textContent = deletebuttonText;
+    deleteButton.style.color = "white";
     deleteButton.classList.add("btn");
     deleteButton.classList.add("btn-sm");
     deleteButton.style.backgroundColor = "#ff69b4";
@@ -145,19 +209,15 @@ function mainElements(elements){
     elementsContainer.append(elements);
     buttonContainer.append(addButton, editButton, deleteButton);
     mainDiv.append(elementsContainer, buttonContainer);
-    
 }
 
 function genareteTable(header){
     let table = document.createElement("table");
-    table.classList.add("table", "table-bordered", "table-striped", "table-primary"); // Adiciona classes do Bootstrap
-
+    table.classList.add("table", "table-bordered", "table-striped", "table-primary");
 
     let thead = document.createElement("thead");
     let tbody = document.createElement("tbody");
-
     
-    // Criar cabeçalho da tabela
     const headerRow = document.createElement("tr");
     const headers = header;
 
@@ -187,7 +247,6 @@ function stockMenu(){
         let mainPage = document.getElementById("mainPage");
         mainPage.replaceChildren();
     
-        // Criar Input e Label para Nome do Produto
         let nameBox = document.createElement("input");
         nameBox.id = "nameBox";
     
@@ -201,7 +260,6 @@ function stockMenu(){
         nameContainer.classList.add("input-container");
         nameContainer.append(labelForNameBox, nameBox);
     
-        // Criar Input e Label para Referência
         let refBox = document.createElement("input");
         refBox.id = "refBox";
     
@@ -212,9 +270,9 @@ function stockMenu(){
         labelFoRrefBox.htmlFor = "refBox";
 
         let addButton = document.createElement("button");
-        let addbuttonText = "Adicionar"; // Apenas uma string
-        addButton.textContent = addbuttonText; // Define o texto do botão
-        addButton.style.color = "white"; // Define a cor do texto
+        let addbuttonText = "Adicionar";
+        addButton.textContent = addbuttonText;
+        addButton.style.color = "white";
         addButton.classList.add("btn");
         addButton.classList.add("btn-sm");
         addButton.style.backgroundColor = "#ff69b4";
@@ -227,22 +285,28 @@ function stockMenu(){
         buttonContainer.classList.add("form-container");
         buttonContainer.append(addButton);
     
-        // Criar um container principal para centrar os elementos
         let formContainer = document.createElement("div");
         formContainer.classList.add("form-container");
         formContainer.append(nameContainer, refContainer);
 
-    
         mainPage.append(formContainer, buttonContainer);
 
         addButton.addEventListener("click", function(){
             let name = nameBox.value;
             let ref = refBox.value;
             let img = "NA";
-            data.createProduct(name, ref, img)
+            data.createProduct(name, ref, img);
             stockMenu();
         });
     });
-    
-    
 }
+
+// Exportar funções para o escopo global
+window.appFunctions = {
+  stockMenu: stockMenu,
+  getProduct: getProduct,
+  addProduct: addProduct
+};
+
+// Também exportar stockMenu individualmente para compatibilidade com o código existente
+window.stockMenu = stockMenu;
