@@ -39,7 +39,17 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 
     <!-- Carregar o script.js como módulo -->
-    <script type="module" src="script.js"></script>
+    <script type="module">
+        import { stockMenu } from './script.js';
+      
+      // Adicionar event listener depois que o documento for carregado
+      document.addEventListener('DOMContentLoaded', function() {
+        document.getElementById('stockImg').addEventListener('click', function() {
+          stockMenu();
+        });
+      });
+    </script>
+    
     <script>
       // Adicionar event listener depois que o documento for carregado
       document.addEventListener('DOMContentLoaded', function() {
