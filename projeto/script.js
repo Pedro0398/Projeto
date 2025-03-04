@@ -261,7 +261,7 @@ function mainElements(elements) {
 
 function genareteTable(header) {
     let table = document.createElement("table");
-    table.classList.add("table", "table-bordered", "table-striped", "table-hover");
+    table.classList.add("table", "table-bordered", "table-striped", "table-hover", "table-primary");
     table.style.maxWidth = "800px";
     table.style.margin = "0 auto";
 
