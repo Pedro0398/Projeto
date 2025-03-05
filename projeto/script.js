@@ -325,8 +325,6 @@ async function refreshProductList() {
 }
 
 async function stockMenu() {
-    // First, load the latest data from Firebase
-    await getProduct();
     
     // Now create the table with headers
     let headers = ["Nome", "Referencia", "Imagem"];
