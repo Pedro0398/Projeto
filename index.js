@@ -31,7 +31,7 @@ app.get('/api/produtos', async (req, res) => {
 });
 
 // Rota para adicionar produto
-app.post('/api/produtos', async (req, res) => {
+app.post('/api/produtos', async (req, res) => { 
   try {
     const { name, ref, img } = req.body;
     
