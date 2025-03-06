@@ -1,96 +1,18 @@
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
-import { getFirestore, collection, getDocs, addDoc, deleteDoc, doc, query, where } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+const API_URL = 'https://seu-projeto-id.cloudfunctions.net/api';
 
-const firebaseConfig = {
-  apiKey: "AIzaSyA2QDJJb0LXEkEaqHx74n7yMoBsu6GEQ6g",
-  authDomain: "boticario-b56db.firebaseapp.com",
-  databaseURL: "https://boticario-b56db-default-rtdb.europe-west1.firebasedatabase.app",
-  projectId: "boticario-b56db",
-  storageBucket: "boticario-b56db.firebasestorage.app",
-  messagingSenderId: "161696311980",
-  appId: "1:161696311980:web:f6e59819d2b9136e054d09",
-  measurementId: "G-HS8BTHKJMR"
-};
-
-// Inicializar Firebase
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
-
-console.log("Firebase inicializado com sucesso!");
-
-// Função para buscar produtos do Firestore
+// Função para carregar produtos
 async function getProduct() {
-  try {
-    // Reset the products list before loading from Firebase
-    data.products = [];
-    
-    // Usar as funções importadas corretamente
-    const productsCollection = collection(db, "products");
-    const productsSnapshot = await getDocs(productsCollection);
-    
-    console.log("Total de produtos encontrados:", productsSnapshot.size);
-    
-    productsSnapshot.forEach((doc) => {
-      data.rebuildList(doc.data().name, doc.data().ref, doc.data().img || "NA", doc.id);
-    });
-    
-    return productsSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-  } catch (error) {
-    console.error("Erro ao buscar produtos:", error);
-    return [];
-  }
-}
-
-async function addProduct(name, ref, img) {
     try {
-      // Referência à coleção "products"
-      const productsCollection = collection(db, "products");
-  
-      // Adicionar um novo documento à coleção
-      const docRef = await addDoc(productsCollection, {
-        name: name,
-        ref: ref,
-        img: img || "NA"
-      });
-  
-      console.log("Produto adicionado com ID:", docRef.id);
-      return docRef.id;
+        const response = await fetch(`${API_URL}/produtos`);
+        const produtos = await response.json();
+        
+        
+        produtos.forEach(produto => {
+            data.createProduct(produto.name, produto.ref, "NA");
+        });
     } catch (error) {
-      console.error("Erro ao adicionar produto:", error);
-      throw error;
+        console.error('Erro ao carregar produtos:', error);
     }
-}
-
-async function deleteProductByRef(ref) {
-  try {
-    // Find documents where ref equals the provided ref
-    const productsCollection = collection(db, "products");
-    const q = query(productsCollection, where("ref", "==", ref));
-    const querySnapshot = await getDocs(q);
-    
-    if (querySnapshot.empty) {
-      console.log("Nenhum produto encontrado com a referência:", ref);
-      return false;
-    }
-    
-    // Delete each matching document
-    const deletePromises = [];
-    querySnapshot.forEach((document) => {
-      console.log("Deletando produto com ID:", document.id);
-      deletePromises.push(deleteDoc(doc(db, "products", document.id)));
-    });
-    
-    await Promise.all(deletePromises);
-    console.log("Produto(s) deletado(s) com sucesso");
-    
-    // Update local data
-    data.products = data.products.filter(product => product.ref !== ref);
-    
-    return true;
-  } catch (error) {
-    console.error("Erro ao deletar produto:", error);
-    return false;
-  }
 }
 
 class ProductClass {
@@ -159,20 +81,9 @@ class InfoHolder {
         return InfoHolder.instance;
     }
 
-    async createProduct(name, ref, img) {
-        try {
-            // Add to Firebase first
-            const docId = await addProduct(name, ref, img);
-            
-            // Then add to local data with the document ID
-            let newProduct = new ProductClass(name, ref, img, docId);
+    createProduct(name, ref, img) {
+            let newProduct = new ProductClass(name, ref, img);
             this.products.push(newProduct);
-            
-            return true;
-        } catch (error) {
-            console.error("Erro ao criar produto:", error);
-            return false;
-        }
     }
 
     rebuildList(name, ref, img, id = null) {
@@ -476,24 +387,4 @@ document.addEventListener('DOMContentLoaded', async function() {
     });
 });
 
-// Exportar funções para o escopo global
-window.appFunctions = {
-    stockMenu: stockMenu,
-    getProduct: getProduct,
-    addProduct: addProduct,
-    deleteProductByRef: deleteProductByRef,
-    refreshProductList: refreshProductList
-};
 
-// Export individual functions for compatibility
-window.stockMenu = stockMenu;
-window.refreshProductList = refreshProductList;
-window.deleteProductByRef = deleteProductByRef;
-
-export {
-    stockMenu,
-    getProduct,
-    addProduct,
-    deleteProductByRef,
-    refreshProductList
-};

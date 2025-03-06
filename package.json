@@ -18,7 +18,9 @@
   "homepage": "https://github.com/Pedro0398/Projeto#readme",
   "description": "",
   "dependencies": {
+    "cors": "^2.8.5",
     "express": "^4.21.2",
-    "firebase": "^11.4.0"
+    "firebase": "^11.4.0",
+    "firebase-admin": "^13.2.0"
   }
 }
