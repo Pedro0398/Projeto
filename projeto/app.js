@@ -1,18 +1,31 @@
-const API_URL = 'https://seu-projeto-id.cloudfunctions.net/api';
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-// Função para carregar produtos
+// Configuração do Firebase
+const firebaseConfig = {
+    apiKey: "AIzaSyA2QDJJb0LXEkEaqHx74n7yMoBsu6GEQ6g",
+    authDomain: "boticario-b56db.firebaseapp.com",
+    databaseURL: "https://boticario-b56db-default-rtdb.europe-west1.firebasedatabase.app",
+    projectId: "boticario-b56db",
+    storageBucket: "boticario-b56db.firebasestorage.app",
+    messagingSenderId: "161696311980",
+    appId: "1:161696311980:web:f6e59819d2b9136e054d09",
+    measurementId: "G-HS8BTHKJMR"
+  };
+
+// Inicializar Firebase
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+// Função para buscar os produtos da coleção "products"
 async function getProduct() {
-    try {
-        const response = await fetch(`${API_URL}/produtos`);
-        const produtos = await response.json();
-        
-        
-        produtos.forEach(produto => {
-            data.createProduct(produto.name, produto.ref, "NA");
-        });
-    } catch (error) {
-        console.error('Erro ao carregar produtos:', error);
-    }
+  const produtosRef = collection(db, "products"); // Acessa a coleção "products"
+  const snapshot = await getDocs(produtosRef);   // Obtém os documentos
+
+  snapshot.forEach((doc) => {
+    data.createProduct(doc.data().name, doc.data().ref, "NA");
+  });
+
 }
 
 class ProductClass {
