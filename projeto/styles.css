@@ -1,52 +1,131 @@
-
 @import url('https://fonts.googleapis.com/css2?family=Pacifico&display=swap');
 
-p {
-    font-family: 'Pacifico', cursive;
-    font-size: 7rem;
-    text-align: center;
-    color: #ff69b4; /* Rosa claro */
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
 }
-
-
-.textMenu {
-    font-size: clamp(1rem, 2.5vw, 1.8rem); /* Ajusta o tamanho do texto automaticamente */
-    font-family: 'Pacifico', cursive;
-    font-size: 4rem;
-    text-align: center;
-    color: #ff69b4; /* Rosa claro */
-  }
-  
-
-  
-  /* Ajustes para ecrãs pequenos */
-  @media (max-width: 768px) {
-    .textMenu {
-      font-size: 1.5rem;
-    }
-  
-    header p {
-      font-size: 2.5rem;
-    }
-  }
-
-
 
 body {
     background-color: #D9AFD9;
     background-image: linear-gradient(0deg, #D9AFD9 0%, #97D9E1 100%);
     background-size: cover;
-    background-attachment: fixed; /* Mantém o fundo fixo */
+    background-attachment: fixed; 
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+header {
+    padding: 20px 0;
+    width: 100%;
+    text-align: center;
+}
+
+header p {
+    font-family: 'Pacifico', cursive;
+    font-size: 5rem;
+    text-align: center;
+    color: #ff69b4;
+    margin: 0;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.textMenu {
+    font-family: 'Pacifico', cursive;
+    font-size: 2.5rem;
+    text-align: center;
+    color: #ff69b4;
+    margin-top: 15px;
+    transition: all 0.3s ease;
+}
+
+main {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    padding: 0; /* Removido o padding */
+}
+
+#mainPage {
+    width: 80%; /* Reduzido para 80% da largura */
+    max-width: 1000px;
+    margin: 0 auto; /* Centraliza horizontalmente */
+    padding: 20px 0; /* Pode ser ajustado conforme necessário */
+    position: relative; /* Mudança para manter o fluxo normal */
+}
+
+main {
+    flex: 1;
+    display: flex;
+    align-items: flex-start; /* Alinha os elementos ao topo */
+    justify-content: center;
+    width: 100%;
+    padding: 0; /* Remover padding */
+}
+
+.col-md-4 {
+    display: flex;
+    justify-content: center;
+}
+
+.menu-card {
+    background-color: rgba(255, 255, 255, 0.7);
+    border-radius: 15px;
+    padding: 30px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    height: 220px; /* Altura fixa */
+    width: 220px; /* Largura fixa */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.menu-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+.menu-card:hover .textMenu {
+    color: #d44a9a;
+}
+
+.menu-icon {
+    width: 100px;
+    height: auto;
+    transition: all 0.3s ease;
+}
+
+.menu-card:hover .menu-icon {
+    transform: scale(1.1);
+}
+
+footer {
+    width: 100%;
+    padding: 15px 0;
+    background-color: rgba(255, 255, 255, 0.3);
+    text-align: center;
+    margin-top: auto;
+}
+
+.footer-text {
+    font-family: 'Pacifico', cursive;
+    font-size: 1rem;
+    color: #ff69b4;
+    margin: 0;
 }
 
 .btn-purple {
-    background-color: #8a2be2; /* Cor roxa */
+    background-color: #8a2be2;
     border-color: #8a2be2;
     color: white;
-  }
+}
 
-  /* Estilizar o contêiner principal para centrar tudo */
-/* Contêiner principal que centraliza tudo */
 .form-container {
     display: flex;
     flex-direction: column;
@@ -55,20 +134,58 @@ body {
     margin-top: 50px;
 }
 
-/* Contêiner das labels e inputs */
 .input-container {
     display: flex;
     align-items: center;
     gap: 10px;
 }
 
-/* Definir um tamanho fixo para as labels e alinhar o texto à direita */
 .input-container label {
-    width: 150px; /* Ajusta para que todas tenham o mesmo tamanho */
-    text-align: right; /* Faz com que o texto termine na mesma linha */
+    width: 150px;
+    text-align: right;
 }
 
+/* Ajustes para telas menores */
+@media (max-width: 768px) {
+    #mainPage {
+        width: 90%;
+        position: static;
+        transform: none;
+        margin: 0 auto;
+        padding: 20px 0;
+    }
+    
+    header p {
+        font-size: 3rem;
+    }
+    
+    .textMenu {
+        font-size: 1.8rem;
+    }
+    
+    .menu-icon {
+        width: 80px;
+    }
+    
+    .menu-card {
+        width: 180px;
+        height: 180px;
+        padding: 15px;
+    }
+}
 
-
-
-
+@media (max-width: 576px) {
+    header p {
+        font-size: 2.5rem;
+    }
+    
+    .textMenu {
+        font-size: 1.5rem;
+    }
+    
+    .menu-card {
+        width: 160px;
+        height: 160px;
+        padding: 10px;
+    }
+}
